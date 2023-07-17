@@ -1,6 +1,36 @@
 #!/bin/bash
 
-# up to variables from env file.
+# Functions test 
+function check_docker_compose() {
+  # Verify if Docker is installed.
+
+  if ! docker --version > /dev/null 2>&1; then
+    echo "O Docker não está instalado."
+    return 1
+  fi
+
+  # Verify if Docker Compose is installed.
+  if ! docker-compose --version > /dev/null 2>&1; then
+    echo "O Docker Compose não está instalado."
+    return 1
+  fi
+
+  echo "O Docker e o Docker Compose estão instalados."
+
+}
+
+
+echo "Befor to begin we gonna see if Docker and Docker Compose are installed"
+
+
+if check_docker_compose; then
+  echo "Docker and Docker Compose okk."
+  sleep 2
+else
+  echo "The Docker and Docker Compose doesn't intalled. Install first and comming up"
+  exit 1
+fi
+
 source variables.env
 
 cd $SOURCE_WORKS
@@ -57,5 +87,8 @@ sleep 2
 sed -i "s|laravel|$PROJECT|g" docker-compose.yml
 
 echo "Finished. Run docker-compose on the folder your project"
+
+
+
 
 
