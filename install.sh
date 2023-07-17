@@ -5,17 +5,17 @@ function check_docker_compose() {
   # Verify if Docker is installed.
 
   if ! docker --version > /dev/null 2>&1; then
-    echo "O Docker não está instalado."
+    echo "Docker OK"
     return 1
   fi
 
   # Verify if Docker Compose is installed.
   if ! docker-compose --version > /dev/null 2>&1; then
-    echo "O Docker Compose não está instalado."
+    echo "Docker doesn't installed"
     return 1
   fi
 
-  echo "O Docker e o Docker Compose estão instalados."
+  echo "Docker and Docker Compose doesn't installed. Please, install the before and continue..."
 
 }
 
