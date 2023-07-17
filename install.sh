@@ -1,60 +1,61 @@
 #!/bin/bash
 
+# up to variables from env file.
 source variables.env
 
 cd $SOURCE_WORKS
 
-echo "Quando será o nome do projeto? " 
+echo "What name of project?" 
 read PROJECT
 
 if [ -d $PROJECT ]; then
-	echo "Este diretório já existe, escolha outro nome..."
-	echo "Reinicie o script"
+	echo "This directory there "
+	echo "Reboot this script to continue..."
 	exit 0
 fi
 
-git clone -b v8.6.11 https://github.com/laravel/laravel.git $PROJECT
+git clone $LARAVEL_VERSION $PROJECT
 
 cd $PROJECT
 
 sleep 2
 
-echo "Renomeando arquivo .env"
+echo "Rename .env of Laravel"
 
 cp .env.example .env
 
-echo "Alterando variavel do banco de dados para mysql"
+echo "Changing the variable of Database "
 sleep 2
 sed -i "s|DB_HOST=127.0.0.1|DB_HOST=mysql|g" .env
 sed -i "s|DB_DATABASE=laravel|DB_DATABASE=$PROJECT|g" .env  
 sed -i "s|DB_PASSWORD=|DB_PASSWORD=root|g" .env 
 
 sleep 2
-echo "Copiando pasta do NGINX"
+echo "Copy folder NGINX"
 cp -R $NGINX .
 
 
 sleep 2
-echo "Copiando o DockerFile"
+echo "Copy DockerFile"
 cp -R $DOCKERFILE .
 sleep 2
 
 
-echo "Copiando o composer"
+echo "Copy Docker-compose"
 cp -R $COMPOSER .
 sleep 2
 
-echo "Renomeando arquivos do NGINX conforme $PROJECT"
+echo "Rename files of NGINX according to $PROJECT"
 
 
 sleep 5
 sed -i "s|laravel:9000|$PROJECT:9000|g" docker/nginx/laravel.conf
 
 
-echo "Renomeando arquivos do compose conforme $PROJECT"
+echo "Rename files of composer according to $PROJECT"
 sleep 2
 sed -i "s|laravel|$PROJECT|g" docker-compose.yml
 
-echo "Finalziado, rode docker-compose up -d para inicialziar o servidor."
+echo "Finished. Run docker-compose on the folder your project"
 
 
